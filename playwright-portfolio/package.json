@@ -1,0 +1,64 @@
+{
+  "name": "playwright-automation-portfolio",
+  "version": "1.0.0",
+  "description": "Automated testing portfolio using Playwright with Page Object Model architecture",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:report": "npx playwright show-report",
+    "test:codegen": "npx playwright codegen",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:safari": "npx playwright test --project=webkit",
+    "test:mobile": "npx playwright test --project=mobile-chrome",
+    "test:parallel": "npx playwright test --workers=4",
+    "test:single": "npx playwright test --workers=1",
+    "install:browsers": "npx playwright install",
+    "install:deps": "npx playwright install-deps",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "rimraf test-results playwright-report",
+    "pretest": "npm run clean"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "e2e",
+    "typescript",
+    "page-object-model",
+    "pom",
+    "qa",
+    "web-testing"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.8.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-playwright": "^0.16.0",
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/playwright-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tu-usuario/playwright-automation/issues"
+  },
+  "homepage": "https://github.com/tu-usuario/playwright-automation#readme"
+}
