@@ -2,61 +2,61 @@ import { Page, Locator } from '@playwright/test';
 import { BasePage } from './base-page';
 
 /**
- * Example Home Page Object
- * Demonstrates how to implement POM pattern
+ * Example.com Page Object
+ * Specific implementation for https://example.com
  */
 export class HomePage extends BasePage {
-  // Locators
-  private readonly header: Locator;
-  private readonly navigationMenu: Locator;
-  private readonly searchBox: Locator;
-  private readonly loginButton: Locator;
+  // Specific locators for example.com
+  private readonly mainHeading: Locator;
+  private readonly paragraph: Locator;
+  private readonly moreInfoLink: Locator;
 
   constructor(page: Page) {
     super(page);
     
-    // Initialize locators
-    this.header = page.locator('header');
-    this.navigationMenu = page.locator('nav[role="navigation"]');
-    this.searchBox = page.locator('input[type="search"]');
-    this.loginButton = page.locator('button:has-text("Login")');
+    // Example.com specific locators
+    this.mainHeading = page.locator('h1');
+    this.paragraph = page.locator('div p');
+    this.moreInfoLink = page.locator('a[href*="iana.org"]');
   }
 
   /**
-   * Navigate to home page
+   * Open example.com website
    */
-  async navigateToHome(): Promise<void> {
-    await this.goto('/');
+  async open(): Promise<void> {
+    await this.goto('https://example.com');
     await this.waitForPageLoad();
   }
 
   /**
-   * Search for a term
+   * Get the main heading text
    */
-  async search(term: string): Promise<void> {
-    await this.searchBox.fill(term);
-    await this.searchBox.press('Enter');
+  async getMainHeading(): Promise<string> {
+    return await this.mainHeading.textContent() || '';
   }
 
   /**
-   * Click login button
+   * Get the description paragraph
    */
-  async clickLogin(): Promise<void> {
-    await this.loginButton.click();
+  async getDescription(): Promise<string> {
+    return await this.paragraph.textContent() || '';
   }
 
   /**
-   * Check if header is visible
+   * Click on "More information" link
    */
-  async isHeaderVisible(): Promise<boolean> {
-    return await this.header.isVisible();
+  async clickMoreInfo(): Promise<void> {
+    await this.moreInfoLink.click();
   }
 
   /**
-   * Get navigation menu items
+   * Check if all main elements are visible
    */
-  async getNavigationItems(): Promise<string[]> {
-    const items = await this.navigationMenu.locator('a').allTextContents();
-    return items;
+  async areMainElementsVisible(): Promise<boolean> {
+    const isHeadingVisible = await this.mainHeading.isVisible();
+    const isParagraphVisible = await this.paragraph.isVisible();
+    const isLinkVisible = await this.moreInfoLink.isVisible();
+    
+    return isHeadingVisible && isParagraphVisible && isLinkVisible;
   }
 }
