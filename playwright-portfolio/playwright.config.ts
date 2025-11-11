@@ -150,19 +150,5 @@ export default defineConfig({
         channel: 'msedge' 
       },
     },
-  ],
-
-  // Web Server configuration for local development
-  webServer: [
-    {
-      command: 'npm run dev',
-      port: 3000,
-      reuseExistingServer: !process.env.CI,
-      timeout: 120000,
-    }
-  ],
-
-  // Global setup and teardown
-  globalSetup: require.resolve('./fixtures/global-setup.ts'),
-  globalTeardown: require.resolve('./fixtures/global-teardown.ts'),
+  ]
 });
