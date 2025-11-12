@@ -10,9 +10,7 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {
-      "actualWorkers": 4
-    },
+    "metadata": {},
     "preserveOutput": "always",
     "reporter": [
       [
@@ -49,9 +47,7 @@
         "outputDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/reports/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 4
-        },
+        "metadata": {},
         "id": "chromium",
         "name": "chromium",
         "testDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/tests",
@@ -69,9 +65,7 @@
         "outputDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/reports/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 4
-        },
+        "metadata": {},
         "id": "firefox",
         "name": "firefox",
         "testDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/tests",
@@ -89,9 +83,7 @@
         "outputDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/reports/artifacts",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 4
-        },
+        "metadata": {},
         "id": "webkit",
         "name": "webkit",
         "testDir": "C:/Users/dacan_iz9xqov/OneDrive/Escritorio/DOCS_UNI/playwright-automation/playwright-automation/playwright-portfolio/tests",
@@ -113,315 +105,19 @@
     "workers": 6,
     "webServer": null
   },
-  "suites": [
+  "suites": [],
+  "errors": [
     {
-      "title": "smoke.spec.ts",
-      "file": "smoke.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Smoke Suite - Critical Path Tests",
-          "file": "smoke.spec.ts",
-          "line": 4,
-          "column": 6,
-          "specs": [
-            {
-              "title": "@smoke should load homepage and display title",
-              "ok": true,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2430,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-11T04:14:40.533Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "4219922fea2e2bd3c691-8895af3c19e3e17a7978",
-              "file": "smoke.spec.ts",
-              "line": 5,
-              "column": 7
-            },
-            {
-              "title": "@smoke should display basic page structure",
-              "ok": false,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 2575,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:28:32",
-                        "location": {
-                          "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                          "column": 32,
-                          "line": 28
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 26 |\u001b[39m     \u001b[90m// Verificar contenido esperado usando método específico\u001b[39m\n \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m hasExpectedContent \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mhasExpectedContent()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 28 |\u001b[39m     expect(hasExpectedContent)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 29 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 30 |\u001b[39m\n \u001b[90m 31 |\u001b[39m   test(\u001b[32m'@smoke should display correct content'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                            "column": 32,
-                            "line": 28
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 26 |\u001b[39m     \u001b[90m// Verificar contenido esperado usando método específico\u001b[39m\n \u001b[90m 27 |\u001b[39m     \u001b[36mconst\u001b[39m hasExpectedContent \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mhasExpectedContent()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 28 |\u001b[39m     expect(hasExpectedContent)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 29 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 30 |\u001b[39m\n \u001b[90m 31 |\u001b[39m   test(\u001b[32m'@smoke should display correct content'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:28:32\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-11T04:14:40.556Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-5a806-isplay-basic-page-structure-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-5a806-isplay-basic-page-structure-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-5a806-isplay-basic-page-structure-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-5a806-isplay-basic-page-structure-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                        "column": 32,
-                        "line": 28
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4219922fea2e2bd3c691-92f76537f9aefd4185a7",
-              "file": "smoke.spec.ts",
-              "line": 13,
-              "column": 7
-            },
-            {
-              "title": "@smoke should display correct content",
-              "ok": false,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 2614,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m\n    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:41:25",
-                        "location": {
-                          "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                          "column": 25,
-                          "line": 41
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 39 |\u001b[39m     \u001b[90m// Verificar contenido del párrafo principal\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m description \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetDescription()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     expect(description)\u001b[33m.\u001b[39mtoContain(\u001b[32m'This domain is for use in illustrative examples'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \n \u001b[90m 43 |\u001b[39m     \u001b[90m// Opcional: verificar que existe el enlace \"More information\"\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'a[href*=\"iana.org\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                            "column": 25,
-                            "line": 41
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m\n\n\u001b[0m \u001b[90m 39 |\u001b[39m     \u001b[90m// Verificar contenido del párrafo principal\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m description \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetDescription()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     expect(description)\u001b[33m.\u001b[39mtoContain(\u001b[32m'This domain is for use in illustrative examples'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \n \u001b[90m 43 |\u001b[39m     \u001b[90m// Opcional: verificar que existe el enlace \"More information\"\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'a[href*=\"iana.org\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:41:25\u001b[22m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-11T04:14:40.557Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                        "column": 25,
-                        "line": 41
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4219922fea2e2bd3c691-98c9cbb4047e29e53f73",
-              "file": "smoke.spec.ts",
-              "line": 31,
-              "column": 7
-            },
-            {
-              "title": "@smoke should handle multiple paragraphs correctly",
-              "ok": false,
-              "tags": [
-                "smoke"
-              ],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 2545,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m\n    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:60:29",
-                        "location": {
-                          "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                          "column": 29,
-                          "line": 60
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 58 |\u001b[39m     \u001b[90m// Verificar contenido del primer párrafo\u001b[39m\n \u001b[90m 59 |\u001b[39m     \u001b[36mconst\u001b[39m mainDescription \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetDescription()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m     expect(mainDescription)\u001b[33m.\u001b[39mtoContain(\u001b[32m'This domain is for use in illustrative examples'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                            "column": 29,
-                            "line": 60
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"This domain is for use in illustrative examples\"\u001b[39m\nReceived string:    \u001b[31m\"This domain is for use in documentation examples without needing permission. Avoid use in operations.\"\u001b[39m\n\n\u001b[0m \u001b[90m 58 |\u001b[39m     \u001b[90m// Verificar contenido del primer párrafo\u001b[39m\n \u001b[90m 59 |\u001b[39m     \u001b[36mconst\u001b[39m mainDescription \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetDescription()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m     expect(mainDescription)\u001b[33m.\u001b[39mtoContain(\u001b[32m'This domain is for use in illustrative examples'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts:60:29\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "Found paragraphs: [\n  'This domain is for use in documentation examples without needing permission. Avoid use in operations.',\n  'Learn more'\n]\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-11T04:14:40.580Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-4e8d4-ltiple-paragraphs-correctly-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-4e8d4-ltiple-paragraphs-correctly-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-4e8d4-ltiple-paragraphs-correctly-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-4e8d4-ltiple-paragraphs-correctly-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\tests\\smoke.spec.ts",
-                        "column": 29,
-                        "line": 60
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4219922fea2e2bd3c691-1d9879f4a3d305013b6c",
-              "file": "smoke.spec.ts",
-              "line": 47,
-              "column": 7
-            }
-          ]
-        }
-      ]
+      "message": "Error: EPERM: operation not permitted, rmdir 'C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium'",
+      "stack": "Error: EPERM: operation not permitted, rmdir 'C:\\Users\\dacan_iz9xqov\\OneDrive\\Escritorio\\DOCS_UNI\\playwright-automation\\playwright-automation\\playwright-portfolio\\reports\\artifacts\\smoke-Smoke-Suite---Critic-6e2e0-uld-display-correct-content-chromium'"
     }
   ],
-  "errors": [],
   "stats": {
-    "startTime": "2025-11-11T04:14:39.625Z",
-    "duration": 4295.652999999999,
-    "expected": 1,
+    "startTime": "2025-11-12T04:14:36.106Z",
+    "duration": 67057.29400000001,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 3,
+    "unexpected": 0,
     "flaky": 0
   }
 }

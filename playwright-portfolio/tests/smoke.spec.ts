@@ -36,9 +36,9 @@ test.describe('Smoke Suite - Critical Path Tests', () => {
     const heading = await homePage.getMainHeading();
     expect(heading).toBe('Example Domain');
     
-    // Verificar contenido del párrafo principal
+    // Verificar contenido del párrafo principal - TEXTO CORREGIDO
     const description = await homePage.getDescription();
-    expect(description).toContain('This domain is for use in illustrative examples');
+    expect(description).toContain('This domain is for use in documentation examples');
     
     // Opcional: verificar que existe el enlace "More information"
     await expect(page.locator('a[href*="iana.org"]')).toBeVisible();
@@ -55,8 +55,8 @@ test.describe('Smoke Suite - Critical Path Tests', () => {
     // Verificar que hay al menos 1 párrafo
     expect(allParagraphs.length).toBeGreaterThan(0);
     
-    // Verificar contenido del primer párrafo
+    // Verificar contenido del primer párrafo - TEXTO CORREGIDO
     const mainDescription = await homePage.getDescription();
-    expect(mainDescription).toContain('This domain is for use in illustrative examples');
+    expect(mainDescription).toContain('This domain is for use in documentation examples');
   });
 });

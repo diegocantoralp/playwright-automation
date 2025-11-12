@@ -8,15 +8,15 @@ export default defineConfig({
   },
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  fullyParallel: true,
+  workers: 1, // Cambiar a 1 worker para evitar conflictos
+  fullyParallel: false, // Desactivar paralelismo total
   
   reporter: [
     ['html', { outputFolder: 'reports/html-report', open: 'never' }],
     ['json', { outputFile: 'reports/results.json' }],
     ['list'],
     // Comentar Allure temporalmente si da problemas
-    ['allure-playwright', { outputFolder: 'reports/allure-results' }]
+    // ['allure-playwright', { outputFolder: 'reports/allure-results' }]
   ],
   
   use: {
@@ -40,8 +40,8 @@ export default defineConfig({
     '**/build/**'
   ],
 
-  // Usar timestamp para evitar conflictos
-  outputDir: `reports/artifacts/`,
+  // Cambiar directorio para evitar conflictos
+  outputDir: `test-results/`,
   
   projects: [
     {
