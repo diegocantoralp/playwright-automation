@@ -1,25 +1,30 @@
-import { test as base, Page } from '@playwright/test';
+import { test as base, Page, APIRequestContext } from '@playwright/test';
 import { HomePage } from '../pages/home-page';
+import { ApiHelper } from './api-helper';
 
 /**
- * Custom test fixtures that inject page objects
- * This provides a clean, reusable way to access page objects in tests
+ * Custom test fixtures
  */
 export interface TestFixtures {
   homePage: HomePage;
+  apiHelper: ApiHelper;
 }
 
-/**
- * Extended test with custom fixtures
- * Usage: import { test, expect } from '../fixtures/base-test';
- */
 export const test = base.extend<TestFixtures>({
   /**
-   * HomePage fixture - automatically creates and provides HomePage instance
+   * HomePage fixture
    */
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
     await use(homePage);
+  },
+
+  /**
+   * API Helper fixture
+   */
+  apiHelper: async ({ request }, use) => {
+    const apiHelper = new ApiHelper(request);
+    await use(apiHelper);
   },
 });
 

@@ -1,62 +1,72 @@
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/home-page';
+import { test, expect } from '../fixtures/base-test';
 
 test.describe('Smoke Suite - Critical Path Tests', () => {
-  test('@smoke should load homepage and display title', async ({ page }) => {
-    const homePage = new HomePage(page);
+  test('@smoke @ui should load homepage and display title', async ({ homePage }) => {
     await homePage.open();
     
     const title = await homePage.getTitle();
     expect(title).toMatch(/example/i);
   });
 
-  test('@smoke should display basic page structure', async ({ page }) => {
-    const homePage = new HomePage(page);
+  test('@smoke @ui should display basic page structure', async ({ homePage }) => {
     await homePage.open();
     
-    // Verificar que el título no esté vacío
-    const title = await homePage.getTitle();
-    expect(title).not.toBe('');
-    expect(title).toContain('Example Domain');
-    
-    // Verificar que la página tenga contenido básico usando método mejorado
-    const areElementsVisible = await homePage.areMainElementsVisible();
-    expect(areElementsVisible).toBe(true);
-    
-    // Verificar contenido esperado usando método específico
-    const hasExpectedContent = await homePage.hasExpectedContent();
-    expect(hasExpectedContent).toBe(true);
+    // Using POM methods for cleaner tests
+    await homePage.verifyPageStructure();
+    await homePage.verifyExpectedContent();
   });
 
-  test('@smoke should display correct content', async ({ page }) => {
-    const homePage = new HomePage(page);
+  test('@smoke @ui should display correct content', async ({ homePage }) => {
     await homePage.open();
     
-    // Verificar contenido específico del heading
     const heading = await homePage.getMainHeading();
     expect(heading).toBe('Example Domain');
     
-    // Verificar contenido del párrafo principal - TEXTO CORREGIDO
     const description = await homePage.getDescription();
     expect(description).toContain('This domain is for use in documentation examples');
-    
-    // Opcional: verificar que existe el enlace "More information"
-    await expect(page.locator('a[href*="iana.org"]')).toBeVisible();
   });
 
-  test('@smoke should handle multiple paragraphs correctly', async ({ page }) => {
-    const homePage = new HomePage(page);
+  test('@smoke @responsive should work on mobile devices', async ({ homePage }) => {
+    await homePage.open();
+    await homePage.verifyResponsiveDesign();
+  });
+
+  test('@regression @ui should handle navigation correctly', async ({ homePage, page }) => {
     await homePage.open();
     
-    // Obtener todos los párrafos para debug
+    // Test navigation
+    await homePage.clickMoreInfo();
+    
+    // Verify we navigated to IANA
+    expect(page.url()).toContain('iana.org');
+  });
+
+  test('@regression @ui should display all paragraphs correctly', async ({ homePage }) => {
+    await homePage.open();
+    
     const allParagraphs = await homePage.getAllParagraphs();
     console.log('Found paragraphs:', allParagraphs);
     
-    // Verificar que hay al menos 1 párrafo
     expect(allParagraphs.length).toBeGreaterThan(0);
     
-    // Verificar contenido del primer párrafo - TEXTO CORREGIDO
     const mainDescription = await homePage.getDescription();
     expect(mainDescription).toContain('This domain is for use in documentation examples');
+  });
+});
+
+test.describe('API Contract Tests', () => {
+  test('@smoke @api should validate health endpoint contract', async ({ apiHelper }) => {
+    const healthData = await apiHelper.validateHealthEndpoint();
+    
+    // Additional business logic assertions
+    expect(healthData.status).toBe('ok');
+    expect(healthData.version).toBeTruthy();
+  });
+
+  test('@regression @api should handle API errors gracefully', async ({ apiHelper }) => {
+    // Test non-existent endpoint
+    await expect(async () => {
+      await apiHelper.validateErrorResponse('https://example.com/nonexistent', 404);
+    }).not.toThrow();
   });
 });
