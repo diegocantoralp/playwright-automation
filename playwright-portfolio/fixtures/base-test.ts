@@ -1,20 +1,26 @@
-import { test as base } from '@playwright/test';
+import { test as base, Page } from '@playwright/test';
+import { HomePage } from '../pages/home-page';
 
 /**
- * Extended test fixtures for the automation suite
- * Use this to create reusable setup/teardown logic
+ * Custom test fixtures that inject page objects
+ * This provides a clean, reusable way to access page objects in tests
  */
-export const test = base.extend({
-  // Example custom fixture
-  // customPage: async ({ page }, use) => {
-  //   // Setup
-  //   await page.goto('/');
-  //   
-  //   // Use the fixture
-  //   await use(page);
-  //   
-  //   // Teardown (optional)
-  // },
+export interface TestFixtures {
+  homePage: HomePage;
+}
+
+/**
+ * Extended test with custom fixtures
+ * Usage: import { test, expect } from '../fixtures/base-test';
+ */
+export const test = base.extend<TestFixtures>({
+  /**
+   * HomePage fixture - automatically creates and provides HomePage instance
+   */
+  homePage: async ({ page }, use) => {
+    const homePage = new HomePage(page);
+    await use(homePage);
+  },
 });
 
 export { expect } from '@playwright/test';
