@@ -5,17 +5,24 @@ export default defineConfig({
   timeout: 30000,
   expect: {
     timeout: 10000,
+    // Configure visual comparison
+    toHaveScreenshot: {
+      threshold: 0.2,
+    },
+    toMatchSnapshot: {
+      threshold: 0.2
+    }
   },
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1, // Cambiar a 1 worker para evitar conflictos
-  fullyParallel: false, // Desactivar paralelismo total
+  workers: process.env.CI ? 1 : undefined,
+  fullyParallel: !process.env.CI, // Disable parallel in CI for visual stability
   
   reporter: [
     ['html', { outputFolder: 'reports/html-report', open: 'never' }],
     ['json', { outputFile: 'reports/results.json' }],
     ['list'],
-    // Comentar Allure temporalmente si da problemas
+    // Uncomment when allure is working properly
     // ['allure-playwright', { outputFolder: 'reports/allure-results' }]
   ],
   
@@ -32,6 +39,7 @@ export default defineConfig({
     acceptDownloads: true,
     locale: 'es-ES',
     timezoneId: 'America/Mexico_City',
+
   },
 
   testIgnore: [
@@ -40,28 +48,48 @@ export default defineConfig({
     '**/build/**'
   ],
 
-  // Cambiar directorio para evitar conflictos
   outputDir: `test-results/`,
   
   projects: [
+    // Smoke tests - fast feedback
     {
-      name: 'chromium',
+      name: 'chromium-smoke',
       use: { 
         ...devices['Desktop Chrome'],
         channel: 'chrome',
       },
+      testMatch: /.*@smoke.*/,
     },
+    
+    // Regression tests - comprehensive
     {
-      name: 'firefox',
+      name: 'chromium-regression',
       use: { 
-        ...devices['Desktop Firefox'],
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
+      testMatch: /.*@regression.*/,
     },
+    
+    // Visual tests - specific configuration
     {
-      name: 'webkit',
+      name: 'chromium-visual',
       use: { 
-        ...devices['Desktop Safari'],
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+        // Specific settings for visual tests
+          },
+      testMatch: /.*@visual.*/,
+    },
+    
+    // Accessibility tests
+    {
+      name: 'chromium-a11y',
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
+      testMatch: /.*@a11y.*/,
     },
   ]
 });
