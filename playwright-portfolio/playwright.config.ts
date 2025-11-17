@@ -5,7 +5,6 @@ export default defineConfig({
   timeout: 30000,
   expect: {
     timeout: 10000,
-    // Configure visual comparison
     toHaveScreenshot: {
       threshold: 0.2,
     },
@@ -16,13 +15,12 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  fullyParallel: !process.env.CI, // Disable parallel in CI for visual stability
+  fullyParallel: !process.env.CI,
   
   reporter: [
     ['html', { outputFolder: 'reports/html-report', open: 'never' }],
     ['json', { outputFile: 'reports/results.json' }],
     ['list'],
-    // Uncomment when allure is working properly
     // ['allure-playwright', { outputFolder: 'reports/allure-results' }]
   ],
   
@@ -39,7 +37,6 @@ export default defineConfig({
     acceptDownloads: true,
     locale: 'es-ES',
     timezoneId: 'America/Mexico_City',
-
   },
 
   testIgnore: [
@@ -51,7 +48,7 @@ export default defineConfig({
   outputDir: `test-results/`,
   
   projects: [
-    // Smoke tests - fast feedback
+    // Smoke tests - critical path, fast feedback
     {
       name: 'chromium-smoke',
       use: { 
@@ -61,7 +58,37 @@ export default defineConfig({
       testMatch: /.*@smoke.*/,
     },
     
-    // Regression tests - comprehensive
+    // API tests - contract and mock testing
+    {
+      name: 'chromium-api',
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+      testMatch: /.*@api.*/,
+    },
+    
+    // Mock tests - all mocked scenarios
+    {
+      name: 'chromium-mock',
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+      testMatch: /.*@mock.*/,
+    },
+    
+    // Edge cases - error scenarios and boundaries
+    {
+      name: 'chromium-edge',
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+      testMatch: /.*@edge.*/,
+    },
+    
+    // Regression tests - comprehensive testing
     {
       name: 'chromium-regression',
       use: { 
@@ -71,14 +98,13 @@ export default defineConfig({
       testMatch: /.*@regression.*/,
     },
     
-    // Visual tests - specific configuration
+    // Visual tests - screenshot comparison
     {
       name: 'chromium-visual',
       use: { 
         ...devices['Desktop Chrome'],
         channel: 'chrome',
-        // Specific settings for visual tests
-          },
+      },
       testMatch: /.*@visual.*/,
     },
     
@@ -90,6 +116,15 @@ export default defineConfig({
         channel: 'chrome',
       },
       testMatch: /.*@a11y.*/,
+    },
+
+    // Integration tests - cross-browser when needed
+    {
+      name: 'firefox-integration',
+      use: { 
+        ...devices['Desktop Firefox'],
+      },
+      testMatch: /.*@integration.*/,
     },
   ]
 });

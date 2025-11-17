@@ -3,11 +3,12 @@ import { HomePage } from '../pages/home-page';
 import { ApiHelper } from './api-helper';
 
 /**
- * Custom test fixtures
+ * Enhanced test fixtures with mocking capabilities
  */
 export interface TestFixtures {
   homePage: HomePage;
   apiHelper: ApiHelper;
+  apiHelperWithMocking: ApiHelper;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -20,10 +21,18 @@ export const test = base.extend<TestFixtures>({
   },
 
   /**
-   * API Helper fixture
+   * API Helper fixture (without page for real requests)
    */
   apiHelper: async ({ request }, use) => {
     const apiHelper = new ApiHelper(request);
+    await use(apiHelper);
+  },
+
+  /**
+   * API Helper with mocking capabilities
+   */
+  apiHelperWithMocking: async ({ request, page }, use) => {
+    const apiHelper = new ApiHelper(request, page);
     await use(apiHelper);
   },
 });

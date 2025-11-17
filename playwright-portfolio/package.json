@@ -13,6 +13,7 @@
     "test:chrome": "npx playwright test --project=chromium",
     "test:firefox": "npx playwright test --project=firefox",
     "test:safari": "npx playwright test --project=webkit",
+    
     "test:smoke": "npx playwright test --grep '@smoke'",
     "test:smoke:ui": "npx playwright test --grep '@smoke.*@ui'",
     "test:smoke:api": "npx playwright test --grep '@smoke.*@api'",
@@ -20,8 +21,18 @@
     "test:a11y": "npx playwright test --grep '@a11y'",
     "test:visual": "npx playwright test --grep '@visual'",
     "test:responsive": "npx playwright test --grep '@responsive'",
+    
+    "test:api": "npx playwright test --grep '@api'",
+    "test:mock": "npx playwright test --grep '@mock'",
+    "test:edge": "npx playwright test --grep '@edge'",
+    "test:contract": "npx playwright test --grep '@api.*@mock'",
+    "test:integration": "npx playwright test --grep '@integration'",
+    
     "test:smoke:headed": "npx playwright test --grep '@smoke' --headed",
     "test:smoke:chrome": "npx playwright test --grep '@smoke' --project=chromium --headed",
+    "test:api:chrome": "npx playwright test --grep '@api' --project=chromium",
+    "test:mock:chrome": "npx playwright test --grep '@mock' --project=chromium",
+    
     "test:update-snapshots": "npx playwright test --grep '@visual' --update-snapshots",
     "install:browsers": "npx playwright install",
     "install:deps": "npm install && npx playwright install",
@@ -42,7 +53,9 @@
     "qa",
     "web-testing",
     "accessibility",
-    "visual-regression"
+    "visual-regression",
+    "api-testing",
+    "mocking"
   ],
   "author": "Diego Cantoral",
   "license": "MIT",
