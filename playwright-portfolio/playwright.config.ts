@@ -48,83 +48,36 @@ export default defineConfig({
   outputDir: `test-results/`,
   
   projects: [
-    // Smoke tests - critical path, fast feedback
+    // Guest user tests (not authenticated)
     {
-      name: 'chromium-smoke',
+      name: 'guest-chromium',
       use: { 
         ...devices['Desktop Chrome'],
         channel: 'chrome',
+        // No authentication context
       },
-      testMatch: /.*@smoke.*/,
     },
     
-    // API tests - contract and mock testing
+    // Authenticated user tests
     {
-      name: 'chromium-api',
+      name: 'auth-chromium',
       use: { 
         ...devices['Desktop Chrome'],
         channel: 'chrome',
+        // Will use storageState with authentication
+        storageState: 'auth/user.json', // If auth file exists
       },
-      testMatch: /.*@api.*/,
-    },
-    
-    // Mock tests - all mocked scenarios
-    {
-      name: 'chromium-mock',
-      use: { 
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      testMatch: /.*@mock.*/,
-    },
-    
-    // Edge cases - error scenarios and boundaries
-    {
-      name: 'chromium-edge',
-      use: { 
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      testMatch: /.*@edge.*/,
-    },
-    
-    // Regression tests - comprehensive testing
-    {
-      name: 'chromium-regression',
-      use: { 
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      testMatch: /.*@regression.*/,
-    },
-    
-    // Visual tests - screenshot comparison
-    {
-      name: 'chromium-visual',
-      use: { 
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      testMatch: /.*@visual.*/,
-    },
-    
-    // Accessibility tests
-    {
-      name: 'chromium-a11y',
-      use: { 
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      testMatch: /.*@a11y.*/,
+      dependencies: ['setup'], // Run setup project first (for auth)
     },
 
-    // Integration tests - cross-browser when needed
+    // Setup project for authentication
     {
-      name: 'firefox-integration',
-      use: { 
-        ...devices['Desktop Firefox'],
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
-      testMatch: /.*@integration.*/,
     },
   ]
 });
