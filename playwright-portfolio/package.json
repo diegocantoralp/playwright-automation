@@ -4,7 +4,8 @@
   "description": "Automated testing portfolio using Playwright with Page Object Model architecture",
   "main": "index.js",
   "scripts": {
-    "dev:demo": "node apps/health-demo/server.js",
+    "dev:demo": "node apps/demo-server/server.js",
+    "dev:health": "node apps/health-demo/server.js",
     "test": "npx playwright test",
     "test:smoke": "npx playwright test --grep \"@smoke\" --project=guest-chromium && npx playwright test --grep \"@smoke\" --project=auth-chromium",
     "test:regression": "npx playwright test --grep \"@regression|@a11y|@visual|@auth\" --project=guest-chromium",
@@ -21,6 +22,9 @@
     "test:a11y": "npx playwright test --grep '@a11y'",
     "test:visual": "npx playwright test --grep '@visual'",
     "test:auth": "npx playwright test --grep '@auth'",
+    
+    "test:flaky": "npx playwright test --repeat-each=5 --workers=1 --grep '@flaky|@edge|@visual'",
+    "test:flaky-full": "npx playwright test --repeat-each=10 --workers=1 --max-failures=3",
     
     "test:guest": "npx playwright test --project=guest-chromium",
     "test:authenticated": "npx playwright test --project=auth-chromium",

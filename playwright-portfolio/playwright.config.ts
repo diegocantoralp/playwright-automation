@@ -25,12 +25,13 @@ export default defineConfig({
   ],
   
   use: {
-    baseURL: 'https://example.com',
+    baseURL: process.env.BASE_URL || 'https://example.com',
+    testIdAttribute: 'data-testid', // Stable selector attribute
     headless: process.env.CI ? true : false,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 15000,
     navigationTimeout: 30000,
-    trace: 'retain-on-failure',
+    trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     ignoreHTTPSErrors: true,
