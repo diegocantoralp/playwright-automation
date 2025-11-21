@@ -41,10 +41,32 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: smoke-test-report
-          path: |
-            reports/
-            test-results/
+          path: reports/
           retention-days: 7
+          
+      - name: 📹 Upload smoke test videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-videos
+          path: test-results/**/video.webm
+          retention-days: 7
+          
+      - name: 📸 Upload smoke test screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-screenshots
+          path: test-results/**/test-failed-*.png
+          retention-days: 7
+          
+      - name: 🔍 Upload smoke test traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-traces
+          path: test-results/**/trace.zip
+          retention-days: 14
 
   # Job 2: Regression Tests
   regression-tests:
@@ -78,10 +100,32 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: regression-test-report
-          path: |
-            reports/
-            test-results/
+          path: reports/
           retention-days: 7
+          
+      - name: 📹 Upload regression test videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-videos
+          path: test-results/**/video.webm
+          retention-days: 7
+          
+      - name: 📸 Upload regression test screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-screenshots
+          path: test-results/**/test-failed-*.png
+          retention-days: 7
+          
+      - name: 🔍 Upload regression test traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-traces
+          path: test-results/**/trace.zip
+          retention-days: 14
           
       - name: 📸 Upload visual screenshots
         if: always()
@@ -130,6 +174,14 @@ jobs:
           name: api-test-report
           path: reports/
           retention-days: 7
+          
+      - name: 🔍 Upload API test traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-traces
+          path: test-results/**/trace.zip
+          retention-days: 14
 
   # Job 4: Flaky Test Detection (Daily + On Demand)
   flaky-scan:
@@ -185,9 +237,17 @@ jobs:
     needs: [smoke-tests, regression-tests, api-tests]
     if: always() && github.event_name != 'schedule'
     steps:
-      - name: 📊 Generate test summary
+      - name: 📊 Generate enriched test summary
         run: |
           echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID:** ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Number:** ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Test Suites" >> $GITHUB_STEP_SUMMARY
           echo "| Test Suite | Status | Description |" >> $GITHUB_STEP_SUMMARY
           echo "|------------|--------|-------------|" >> $GITHUB_STEP_SUMMARY
           echo "| 🚀 Smoke | ${{ needs.smoke-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} | Guest + Authenticated critical paths |" >> $GITHUB_STEP_SUMMARY
@@ -195,8 +255,40 @@ jobs:
           echo "| 🔌 API | ${{ needs.api-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} | API contracts and mocks |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
+          echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "Download test artifacts from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}):" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.smoke-tests.result }}" == "failure" ]; then
+            echo "- 📹 **Smoke Videos** - Test failure recordings" >> $GITHUB_STEP_SUMMARY
+            echo "- 📸 **Smoke Screenshots** - Failure screenshots" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔍 **Smoke Traces** - Detailed execution traces" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.regression-tests.result }}" == "failure" ]; then
+            echo "- 📹 **Regression Videos** - Test failure recordings" >> $GITHUB_STEP_SUMMARY
+            echo "- 📸 **Regression Screenshots** - Failure screenshots" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔍 **Regression Traces** - Detailed execution traces" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.api-tests.result }}" == "failure" ]; then
+            echo "- 🔍 **API Traces** - API test execution traces" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **HTML Reports** available in artifacts for all test suites" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
           if [ "${{ needs.smoke-tests.result }}" == "success" ] && [ "${{ needs.regression-tests.result }}" == "success" ] && [ "${{ needs.api-tests.result }}" == "success" ]; then
             echo "### 🎉 All test suites passed!" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✨ No failures detected. All tests completed successfully." >> $GITHUB_STEP_SUMMARY
           else
-            echo "### ⚠️ Some tests failed - Check reports" >> $GITHUB_STEP_SUMMARY
+            echo "### ⚠️ Some tests failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🔍 Check the artifacts above for:" >> $GITHUB_STEP_SUMMARY
+            echo "- 📹 Video recordings of failures" >> $GITHUB_STEP_SUMMARY
+            echo "- 📸 Screenshots at failure points" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔍 Detailed traces for debugging" >> $GITHUB_STEP_SUMMARY
+            echo "- 📊 Complete HTML reports" >> $GITHUB_STEP_SUMMARY
           fi

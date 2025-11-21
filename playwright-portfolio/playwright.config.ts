@@ -18,8 +18,13 @@ export default defineConfig({
   fullyParallel: !process.env.CI,
   
   reporter: [
-    ['html', { outputFolder: 'reports/html-report', open: 'never' }],
-    ['json', { outputFile: 'reports/results.json' }],
+    ['html', { 
+      outputFolder: 'reports/html-report', 
+      open: 'never',
+      attachmentsBaseURL: process.env.ARTIFACTS_URL // For CI artifacts linking
+    }],
+    ['json', { outputFile: 'reports/test-results.json' }],
+    ['junit', { outputFile: 'reports/junit.xml' }],
     ['list'],
     // ['allure-playwright', { outputFolder: 'reports/allure-results' }]
   ],
@@ -31,9 +36,9 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
     actionTimeout: 15000,
     navigationTimeout: 30000,
-    trace: 'on-first-retry',
-    video: 'retain-on-failure',
-    screenshot: 'only-on-failure',
+    trace: 'on-first-retry', // Capture detailed trace on retry for debugging
+    video: process.env.CI ? 'retain-on-failure' : 'off', // Videos only in CI to save space
+    screenshot: 'only-on-failure', // Auto screenshot on test failure
     ignoreHTTPSErrors: true,
     acceptDownloads: true,
     locale: 'es-ES',
