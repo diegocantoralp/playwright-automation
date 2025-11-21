@@ -36,8 +36,7 @@ playwright-portfolio/
 │   │   └── package.json
 │   └── health-demo/          # Legacy health check demo
 ├── docs/
-│   ├── DATA_TESTID_GUIDE.md  # Best practices for data-testid
-│   └── example-ui-with-testids.html
+│   └── TEST-STRATEGY.md      # Testing strategy documentation
 ├── fixtures/
 │   ├── base-test.ts          # Custom test fixtures
 │   ├── api-helper.ts         # API testing utilities
@@ -51,16 +50,15 @@ playwright-portfolio/
 │   └── products-page.ts      # Products POM
 ├── tests/
 │   ├── smoke.spec.ts         # Critical path tests (@smoke)
-│   ├── accessibility.spec.ts # WCAG compliance (@a11y)
-│   ├── visual.spec.ts        # Screenshot comparisons (@visual)
+│   ├── accessibility/
+│   │   └── home.a11y.spec.ts # WCAG compliance (@a11y)
+│   ├── visual/
+│   │   └── home.visual.spec.ts # Screenshot comparisons (@visual)
 │   ├── api/
 │   │   └── products.contract.mock.spec.ts
 │   ├── authenticated/        # Tests requiring auth
 │   │   ├── dashboard.spec.ts
 │   │   └── profile.spec.ts
-│   ├── guest/               # Public tests (no auth)
-│   │   ├── home.spec.ts
-│   │   └── auth-redirect.spec.ts
 │   └── e2e/
 │       └── products.seed.spec.ts  # Tests using seed fixtures
 ├── .github/
@@ -202,7 +200,14 @@ await page.getByTestId('add-to-cart-button').click();
 await expect(page.getByTestId('product-list')).toBeVisible();
 ```
 
-See [docs/DATA_TESTID_GUIDE.md](./docs/DATA_TESTID_GUIDE.md) for best practices.
+Configure `testIdAttribute` in `playwright.config.ts`:
+```typescript
+export default defineConfig({
+  use: {
+    testIdAttribute: 'data-testid',
+  },
+});
+```
 
 ## ⚙️ CI/CD Pipeline
 
@@ -248,8 +253,7 @@ Configuration in CI:
 
 ## 📚 Documentation
 
-- [Data TestId Guide](./playwright-portfolio/docs/DATA_TESTID_GUIDE.md)
-- [Example UI with TestIds](./playwright-portfolio/docs/example-ui-with-testids.html)
+- [Test Strategy](./playwright-portfolio/docs/TEST-STRATEGY.md)
 
 ## 🔗 Resources
 
