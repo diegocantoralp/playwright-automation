@@ -3,6 +3,21 @@
 Repositorio de **pruebas automatizadas con Playwright** siguiendo la **arquitectura Page Object Model (POM)**.  
 El objetivo es demostrar dominio en automatización progresiva (commits diarios) y buenas prácticas CI/CD.
 
+## 📊 Estado del Proyecto
+
+[![CI](https://img.shields.io/github/actions/workflow/status/diegocantoralp/playwright-automation/ci.yml?branch=main&label=CI%20Pipeline)](https://github.com/diegocantoralp/playwright-automation/actions)
+[![Playwright](https://img.shields.io/badge/Tested%20with-Playwright-45ba4b?logo=playwright)](https://playwright.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+### 🔄 Pipeline de CI
+
+- **Smoke (PR):** Ejecuta cambios afectados o `@smoke` si no hay match → feedback rápido
+- **API (push):** Contratos y mocks con validación Zod
+- **Regression (push a main):** Suite completa con a11y + visual + @auth
+- **Flaky Scan (daily):** Detección automática de tests inestables
+- **Reporte HTML (main):** Publicado automáticamente en **[GitHub Pages](https://diegocantoralp.github.io/playwright-automation/)**
+
 ## 🎯 Features
 
 - ✅ **Page Object Model (POM)**: Arquitectura escalable y mantenible
@@ -15,6 +30,7 @@ El objetivo es demostrar dominio en automatización progresiva (commits diarios)
 - ✅ **Authentication**: Guest vs authenticated user contexts
 - ✅ **Deterministic Testing**: Data fixtures with reset/seed endpoints
 - ✅ **Flaky Detection**: Repeat-each scanning in CI
+- ✅ **Enriched Reports**: Videos, traces, screenshots as artifacts
 - ✅ **CI/CD**: Multi-job GitHub Actions pipeline
 
 ## Tecnologías
@@ -36,7 +52,8 @@ playwright-portfolio/
 │   │   └── package.json
 │   └── health-demo/          # Legacy health check demo
 ├── docs/
-│   └── TEST-STRATEGY.md      # Testing strategy documentation
+│   ├── TEST-STRATEGY.md      # Testing strategy documentation
+│   └── ENRICHED-REPORTS.md   # Reports, videos, traces guide
 ├── fixtures/
 │   ├── base-test.ts          # Custom test fixtures
 │   ├── api-helper.ts         # API testing utilities
@@ -61,6 +78,9 @@ playwright-portfolio/
 │   │   └── profile.spec.ts
 │   └── e2e/
 │       └── products.seed.spec.ts  # Tests using seed fixtures
+├── scripts/
+│   ├── merge-reports.js      # Merge multiple test reports
+│   └── generate-summary.js   # Generate enhanced HTML summary
 ├── .github/
 │   └── workflows/
 │       └── ci.yml           # Multi-job CI pipeline
@@ -132,11 +152,72 @@ npm run test:guest
 ### 5. View Reports
 
 ```bash
-# Open HTML report
+# View HTML report
 npm run test:report
 
 # Run tests with UI
 npm run test:ui
+
+# Run with video recording (local)
+npm run test:with-video
+
+# Run with trace enabled
+npm run test:trace
+
+# Merge multiple reports
+npm run report:merge
+
+# Generate enhanced summary
+npm run report:summary
+```
+
+## 📊 Reports and Artifacts
+
+### Local Reports
+
+```bash
+reports/
+├── html-report/          # Interactive HTML report
+├── test-results.json     # JSON for analysis
+├── junit.xml            # JUnit XML for CI
+├── merged-results.json   # Combined reports
+└── summary.html         # Visual summary with charts
+```
+
+### CI Artifacts
+
+Each CI job uploads separate artifacts:
+
+**Smoke Tests** (7 days):
+- HTML/JSON reports
+- Videos of failures
+- Screenshots
+- Traces (14 days)
+
+**Regression Tests** (7 days):
+- All reports and media
+- Visual snapshots (30 days)
+
+**API Tests** (7 days):
+- Reports and traces
+
+**Flaky Scan** (30 days):
+- Flaky test detection results
+
+### View Traces
+
+```bash
+# Open trace viewer
+npx playwright show-trace test-results/path-to-test/trace.zip
+```
+
+Traces include:
+- Timeline of actions
+- Screenshots at each step
+- Network activity
+- Console logs
+- Source code
+- Call stack
 ```
 
 ## 🎯 Test Tags
@@ -254,6 +335,8 @@ Configuration in CI:
 ## 📚 Documentation
 
 - [Test Strategy](./playwright-portfolio/docs/TEST-STRATEGY.md)
+- [Enriched Reports Guide](./playwright-portfolio/docs/ENRICHED-REPORTS.md)
+- [Day 9: Enriched CI + GitHub Pages](./playwright-portfolio/docs/DAY-09-ENRICHED-CI.md)
 
 ## 🔗 Resources
 

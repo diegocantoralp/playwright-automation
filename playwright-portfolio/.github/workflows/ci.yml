@@ -10,13 +10,15 @@ on:
     - cron: '0 2 * * *'
 
 jobs:
-  # Job 1: Smoke Tests (Guest + Auth)
+  # Job 1: Smoke Tests (Guest + Auth) with Intelligent CI
   smoke-tests:
     name: 🚀 Smoke Tests
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for git diff
         
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -30,43 +32,76 @@ jobs:
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
         
-      - name: 🧪 Run smoke tests (Guest + Auth)
+      - name: 🔍 Detect changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            tests:
+              - 'tests/**/*.spec.ts'
+            app:
+              - 'apps/**'
+              - 'pages/**'
+              - 'playwright.config.*'
+              - 'package.json'
+              - 'package-lock.json'
+        
+      - name: 🧪 Run affected tests (by file)
+        if: github.event_name == 'pull_request' && steps.changes.outputs.tests == 'true'
+        run: |
+          CHANGED_TESTS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^tests/.*\.spec\.ts$' || true)
+          if [ -z "$CHANGED_TESTS" ]; then
+            echo "No direct test files changed, running smoke..."
+            npx playwright test --grep "@smoke" --project=guest-chromium
+          else
+            echo "Running affected tests:"
+            echo "$CHANGED_TESTS"
+            npx playwright test $CHANGED_TESTS --project=guest-chromium
+          fi
+        env:
+          TEST_USER: ${{ secrets.TEST_USER }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      
+      - name: 🧪 Run smoke fallback (app/config changes)
+        if: github.event_name == 'pull_request' && steps.changes.outputs.tests != 'true' && steps.changes.outputs.app == 'true'
+        run: npx playwright test --grep "@smoke" --project=guest-chromium
+        env:
+          TEST_USER: ${{ secrets.TEST_USER }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      
+      - name: 🧪 Default smoke (push or no changes detected)
+        if: github.event_name != 'pull_request' || (steps.changes.outputs.tests != 'true' && steps.changes.outputs.app != 'true')
         run: npm run test:smoke
         env:
           TEST_USER: ${{ secrets.TEST_USER }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         
-      - name: 📊 Upload smoke test report
+      - name: 📊 Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: smoke-test-report
-          path: reports/
+          name: playwright-report-smoke-tests
+          path: playwright-report
           retention-days: 7
           
-      - name: 📹 Upload smoke test videos
-        if: failure()
+      - name: 🔍 Upload traces & media
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: smoke-videos
-          path: test-results/**/video.webm
-          retention-days: 7
-          
-      - name: 📸 Upload smoke test screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: smoke-screenshots
-          path: test-results/**/test-failed-*.png
-          retention-days: 7
-          
-      - name: 🔍 Upload smoke test traces
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: smoke-traces
-          path: test-results/**/trace.zip
+          name: traces-and-media-smoke-tests
+          path: |
+            test-results
+            **/*-trace.zip
           retention-days: 14
+          if-no-files-found: ignore
+          
+      - name: 📝 Job summary
+        if: always()
+        run: |
+          echo "## ✅ Resultados smoke-tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
+          echo "- Reporte HTML: (artefacto) **playwright-report-smoke-tests**" >> $GITHUB_STEP_SUMMARY
+          echo "- Traces/Videos: (artefacto) **traces-and-media-smoke-tests**" >> $GITHUB_STEP_SUMMARY
 
   # Job 2: Regression Tests
   regression-tests:
@@ -95,50 +130,34 @@ jobs:
           TEST_USER: ${{ secrets.TEST_USER }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         
-      - name: 📊 Upload regression test report
+      - name: 📊 Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: regression-test-report
-          path: reports/
+          name: playwright-report-regression-tests
+          path: playwright-report
           retention-days: 7
           
-      - name: 📹 Upload regression test videos
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: regression-videos
-          path: test-results/**/video.webm
-          retention-days: 7
-          
-      - name: 📸 Upload regression test screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: regression-screenshots
-          path: test-results/**/test-failed-*.png
-          retention-days: 7
-          
-      - name: 🔍 Upload regression test traces
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: regression-traces
-          path: test-results/**/trace.zip
-          retention-days: 14
-          
-      - name: 📸 Upload visual screenshots
+      - name: 🔍 Upload traces & media
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-test-screenshots
+          name: traces-and-media-regression-tests
           path: |
-            tests/**/*-actual.png
-            tests/**/*-diff.png
-            tests/**/screenshots/
-          retention-days: 30
+            test-results
+            **/*-trace.zip
+          retention-days: 14
+          if-no-files-found: ignore
+          
+      - name: 📝 Job summary
+        if: always()
+        run: |
+          echo "## ✅ Resultados regression-tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
+          echo "- Reporte HTML: (artefacto) **playwright-report-regression-tests**" >> $GITHUB_STEP_SUMMARY
+          echo "- Traces/Videos: (artefacto) **traces-and-media-regression-tests**" >> $GITHUB_STEP_SUMMARY
 
-  # Job 3: API Tests (Optional - can run in parallel)
+  # Job 3: API Tests
   api-tests:
     name: 🔌 API Tests
     runs-on: ubuntu-latest
@@ -167,21 +186,32 @@ jobs:
       - name: 🧪 Run Edge case tests
         run: npm run test:edge
         
-      - name: 📊 Upload API test report
+      - name: 📊 Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: api-test-report
-          path: reports/
+          name: playwright-report-api-tests
+          path: playwright-report
           retention-days: 7
           
-      - name: 🔍 Upload API test traces
-        if: failure()
+      - name: 🔍 Upload traces & media
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: api-traces
-          path: test-results/**/trace.zip
+          name: traces-and-media-api-tests
+          path: |
+            test-results
+            **/*-trace.zip
           retention-days: 14
+          if-no-files-found: ignore
+          
+      - name: 📝 Job summary
+        if: always()
+        run: |
+          echo "## ✅ Resultados api-tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
+          echo "- Reporte HTML: (artefacto) **playwright-report-api-tests**" >> $GITHUB_STEP_SUMMARY
+          echo "- Traces/Videos: (artefacto) **traces-and-media-api-tests**" >> $GITHUB_STEP_SUMMARY
 
   # Job 4: Flaky Test Detection (Daily + On Demand)
   flaky-scan:
@@ -292,3 +322,28 @@ jobs:
             echo "- 🔍 Detailed traces for debugging" >> $GITHUB_STEP_SUMMARY
             echo "- 📊 Complete HTML reports" >> $GITHUB_STEP_SUMMARY
           fi
+
+  # Job 6: Publish Report to GitHub Pages
+  publish-report:
+    name: 📄 Publish Report to GitHub Pages
+    needs: regression-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📥 Download regression report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report-regression-tests
+          path: ./site
+          
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          commit_message: 'Deploy Playwright report from ${{ github.sha }}'

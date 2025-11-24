@@ -18,20 +18,14 @@ export default defineConfig({
   fullyParallel: !process.env.CI,
   
   reporter: [
-    ['html', { 
-      outputFolder: 'reports/html-report', 
-      open: 'never',
-      attachmentsBaseURL: process.env.ARTIFACTS_URL // For CI artifacts linking
-    }],
-    ['json', { outputFile: 'reports/test-results.json' }],
-    ['junit', { outputFile: 'reports/junit.xml' }],
+    ['html', { open: 'never' }], // Default: playwright-report/
     ['list'],
-    // ['allure-playwright', { outputFolder: 'reports/allure-results' }]
+    ['junit', { outputFile: 'reports/junit/results.xml' }] // Para integraciones futuras
   ],
   
   use: {
-    baseURL: process.env.BASE_URL || 'https://example.com',
-    testIdAttribute: 'data-testid', // Stable selector attribute
+    baseURL: process.env.BASE_URL || 'http://localhost:5173',
+    testIdAttribute: 'data-testid',
     headless: process.env.CI ? true : false,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 15000,
