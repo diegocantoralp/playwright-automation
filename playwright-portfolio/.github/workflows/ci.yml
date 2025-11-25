@@ -84,6 +84,20 @@ jobs:
           path: playwright-report
           retention-days: 7
           
+      - name: 📈 Generate metrics
+        if: always()
+        run: |
+          mkdir -p reports
+          npm run metrics || echo "Metrics generation skipped (no results.json)"
+        
+      - name: 📝 Add metrics to job summary
+        if: always()
+        run: |
+          if [ -f reports/summary.json ]; then
+            echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
+            cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+          fi
+          
       - name: 🔍 Upload traces & media
         if: always()
         uses: actions/upload-artifact@v4
@@ -137,6 +151,20 @@ jobs:
           name: playwright-report-regression-tests
           path: playwright-report
           retention-days: 7
+          
+      - name: 📈 Generate metrics
+        if: always()
+        run: |
+          mkdir -p reports
+          npm run metrics || echo "Metrics generation skipped (no results.json)"
+        
+      - name: 📝 Add metrics to job summary
+        if: always()
+        run: |
+          if [ -f reports/summary.json ]; then
+            echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
+            cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+          fi
           
       - name: 🔍 Upload traces & media
         if: always()
@@ -193,6 +221,20 @@ jobs:
           name: playwright-report-api-tests
           path: playwright-report
           retention-days: 7
+          
+      - name: 📈 Generate metrics
+        if: always()
+        run: |
+          mkdir -p reports
+          npm run metrics || echo "Metrics generation skipped (no results.json)"
+        
+      - name: 📝 Add metrics to job summary
+        if: always()
+        run: |
+          if [ -f reports/summary.json ]; then
+            echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
+            cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+          fi
           
       - name: 🔍 Upload traces & media
         if: always()

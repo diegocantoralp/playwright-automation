@@ -20,6 +20,7 @@ export default defineConfig({
   reporter: [
     ['html', { open: 'never' }], // Default: playwright-report/
     ['list'],
+    ['json', { outputFile: 'reports/results.json' }], // Para métricas
     ['junit', { outputFile: 'reports/junit/results.xml' }] // Para integraciones futuras
   ],
   
@@ -76,6 +77,20 @@ export default defineConfig({
       testMatch: /.*\.setup\.ts/,
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+    },
+
+    // Visual testing project with stable environment
+    {
+      name: 'visual-chromium',
+      testMatch: /.*\.visual\.spec\.ts|tests\/visual\/.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        deviceScaleFactor: 1,
+        locale: 'es-PE',
+        timezoneId: 'America/Lima',
         channel: 'chrome',
       },
     },

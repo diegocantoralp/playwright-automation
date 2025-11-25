@@ -18,6 +18,12 @@ El objetivo es demostrar dominio en automatización progresiva (commits diarios)
 - **Flaky Scan (daily):** Detección automática de tests inestables
 - **Reporte HTML (main):** Publicado automáticamente en **[GitHub Pages](https://diegocantoralp.github.io/playwright-automation/)**
 
+## 📈 Métricas
+
+<!-- METRICS:START -->
+_Pendiente de primera ejecución._
+<!-- METRICS:END -->
+
 ## 🎯 Features
 
 - ✅ **Page Object Model (POM)**: Arquitectura escalable y mantenible
@@ -25,13 +31,16 @@ El objetivo es demostrar dominio en automatización progresiva (commits diarios)
 - ✅ **Test Organization**: Separated by context (guest/authenticated/api)
 - ✅ **Accessibility Testing**: WCAG 2A/AA compliance with @axe-core
 - ✅ **Visual Regression**: Screenshot comparisons with toHaveScreenshot()
+- ✅ **Component Visual Testing**: Isolated component snapshots with stable environment
 - ✅ **API Testing**: Contract validation with Zod schemas
 - ✅ **HTTP Mocking**: Request/response simulation with page.route()
 - ✅ **Authentication**: Guest vs authenticated user contexts
 - ✅ **Deterministic Testing**: Data fixtures with reset/seed endpoints
 - ✅ **Flaky Detection**: Repeat-each scanning in CI
 - ✅ **Enriched Reports**: Videos, traces, screenshots as artifacts
-- ✅ **CI/CD**: Multi-job GitHub Actions pipeline
+- ✅ **Automated Metrics**: Flaky rate, pass rate, duration tracking in README/CI
+- ✅ **Snapshot Cleanup**: Automated orphan snapshot removal
+- ✅ **CI/CD**: Multi-job GitHub Actions pipeline with intelligent test selection
 
 ## Tecnologías
 
@@ -171,6 +180,19 @@ npm run report:merge
 npm run report:summary
 ```
 
+### 6. Metrics and Maintenance
+
+```bash
+# Generate test metrics (compute + update README)
+npm run metrics
+
+# Clean orphaned visual snapshots
+npm run snapshots:prune
+
+# View metrics summary
+cat reports/summary.json
+```
+
 ## 📊 Reports and Artifacts
 
 ### Local Reports
@@ -292,16 +314,45 @@ export default defineConfig({
 
 ## ⚙️ CI/CD Pipeline
 
-GitHub Actions runs multiple jobs:
+### Pipeline Inteligente
 
-1. **🚀 Smoke Tests**: Fast critical path validation (guest + auth)
-2. **🔄 Regression Tests**: Full suite with a11y, visual, auth
-3. **🔌 API Tests**: Contract validation and mocking
-4. **🔍 Flaky Scan**: Daily cron job (2 AM UTC) + on-demand with `[flaky-scan]` in commit message
+GitHub Actions ejecuta jobs adaptativos según el contexto:
 
-### Trigger Flaky Scan Manually
+#### En Pull Requests (CI Inteligente)
+
+1. **🔍 Detección de cambios**: Usa `dorny/paths-filter` para identificar archivos modificados
+2. **🎯 Tests afectados**: Si se modifican specs, ejecuta **solo esos archivos**
+3. **🚀 Smoke fallback**: Si se modifica app/config, ejecuta `@smoke`
+4. **⚡ Feedback rápido**: Resultados en 30-60 segundos para PRs pequeños
+
+#### En Push a Main
+
+1. **🚀 Smoke Tests**: Critical paths (guest + auth)
+2. **🔄 Regression Tests**: Suite completa (a11y + visual + auth)
+3. **🔌 API Tests**: Contract validation y mocking
+4. **📄 GitHub Pages**: Publicación automática del HTML report
+
+#### Scheduled (Diario)
+
+5. **🔍 Flaky Scan**: Detección automática a las 2 AM UTC
+
+### Artefactos por Job
+
+Cada job sube automáticamente:
+- 📊 **HTML Report**: Reporte interactivo con evidencias
+- 🔍 **Traces & Media**: Videos, traces y screenshots de failures
+- 📝 **Job Summary**: Resumen visible en GitHub Actions
+
+### GitHub Pages
+
+- 🌐 **URL**: https://diegocantoralp.github.io/playwright-automation/
+- 🔄 **Actualización**: Automática en cada push a `main`
+- 📊 **Contenido**: Último reporte de regression completo
+
+### Trigger Manual
 
 ```bash
+# Flaky scan on-demand
 git commit -m "feat: new feature [flaky-scan]"
 git push
 ```
@@ -337,6 +388,7 @@ Configuration in CI:
 - [Test Strategy](./playwright-portfolio/docs/TEST-STRATEGY.md)
 - [Enriched Reports Guide](./playwright-portfolio/docs/ENRICHED-REPORTS.md)
 - [Day 9: Enriched CI + GitHub Pages](./playwright-portfolio/docs/DAY-09-ENRICHED-CI.md)
+- [Day 10: Component Visual + Metrics](./playwright-portfolio/docs/DAY-10-COMPONENT-VISUAL.md)
 
 ## 🔗 Resources
 

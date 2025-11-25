@@ -38,6 +38,8 @@
     "report:open": "npx playwright show-report",
     "report:merge": "npx playwright merge-reports --reporter=html blob-reports",
     "report:summary": "node scripts/generate-summary.js",
+    "metrics": "node scripts/metrics/compute-metrics.mjs && node scripts/metrics/update-readme.mjs",
+    "snapshots:prune": "node scripts/visual/cleanup-snapshots.mjs",
     "install:browsers": "npx playwright install",
     "install:deps": "npm install && npx playwright install",
     "clean": "rimraf reports test-results",
