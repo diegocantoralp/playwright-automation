@@ -84,11 +84,12 @@ jobs:
           path: playwright-report
           retention-days: 7
           
-      - name: 📈 Generate metrics
+      - name: 📈 Generate metrics & trending
         if: always()
         run: |
           mkdir -p reports
-          npm run metrics || echo "Metrics generation skipped (no results.json)"
+          npm run metrics:trending || echo "Metrics generation skipped (no results.json)"
+          npm run visual:report || echo "No visual diffs to report"
         
       - name: 📝 Add metrics to job summary
         if: always()
@@ -96,7 +97,23 @@ jobs:
           if [ -f reports/summary.json ]; then
             echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
             cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [ -f reports/visual-diff-report.html ]; then
+              echo "⚠️ Visual differences detected. See artifacts for detailed report." >> $GITHUB_STEP_SUMMARY
+            fi
           fi
+          
+      - name: 📊 Upload metrics reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-smoke-tests
+          path: |
+            reports/summary.json
+            reports/history.json
+            reports/visual-diff-report.html
+          retention-days: 30
+          if-no-files-found: ignore
           
       - name: 🔍 Upload traces & media
         if: always()
@@ -152,11 +169,12 @@ jobs:
           path: playwright-report
           retention-days: 7
           
-      - name: 📈 Generate metrics
+      - name: 📈 Generate metrics & trending
         if: always()
         run: |
           mkdir -p reports
-          npm run metrics || echo "Metrics generation skipped (no results.json)"
+          npm run metrics:trending || echo "Metrics generation skipped (no results.json)"
+          npm run visual:report || echo "No visual diffs to report"
         
       - name: 📝 Add metrics to job summary
         if: always()
@@ -164,7 +182,23 @@ jobs:
           if [ -f reports/summary.json ]; then
             echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
             cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [ -f reports/visual-diff-report.html ]; then
+              echo "⚠️ Visual differences detected. See artifacts for detailed report." >> $GITHUB_STEP_SUMMARY
+            fi
           fi
+          
+      - name: 📊 Upload metrics reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-regression-tests
+          path: |
+            reports/summary.json
+            reports/history.json
+            reports/visual-diff-report.html
+          retention-days: 30
+          if-no-files-found: ignore
           
       - name: 🔍 Upload traces & media
         if: always()
@@ -222,11 +256,11 @@ jobs:
           path: playwright-report
           retention-days: 7
           
-      - name: 📈 Generate metrics
+      - name: 📈 Generate metrics & trending
         if: always()
         run: |
           mkdir -p reports
-          npm run metrics || echo "Metrics generation skipped (no results.json)"
+          npm run metrics:trending || echo "Metrics generation skipped (no results.json)"
         
       - name: 📝 Add metrics to job summary
         if: always()
@@ -234,7 +268,34 @@ jobs:
           if [ -f reports/summary.json ]; then
             echo "## 📊 Test Metrics" >> $GITHUB_STEP_SUMMARY
             cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Skipped:** \(.skipped) | **Flaky:** \(.flaky) (\(.flakyRate)%) | **Duration:** \(.duration)"' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [ -f reports/visual-diff-report.html ]; then
+              echo "⚠️ Visual differences detected. See artifacts for detailed report." >> $GITHUB_STEP_SUMMARY
+            fi
           fi
+          
+      - name: 📊 Upload metrics reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-regression-tests
+          path: |
+            reports/summary.json
+            reports/history.json
+            reports/visual-diff-report.html
+          retention-days: 30
+          if-no-files-found: ignore
+          
+      - name: 🔍 Upload traces & media
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics-api-tests
+          path: |
+            reports/summary.json
+            reports/history.json
+          retention-days: 30
+          if-no-files-found: ignore
           
       - name: 🔍 Upload traces & media
         if: always()
