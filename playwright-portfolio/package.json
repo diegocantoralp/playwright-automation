@@ -35,10 +35,13 @@
     "test:authenticated": "npx playwright test --project=auth-chromium",
     
     "test:update-snapshots": "npx playwright test --grep '@visual' --update-snapshots",
+    "test:visual-dedicated": "npx playwright test --config=playwright.visual.config.ts",
     "report:open": "npx playwright show-report",
     "report:merge": "npx playwright merge-reports --reporter=html blob-reports",
     "report:summary": "node scripts/generate-summary.js",
     "metrics": "node scripts/metrics/compute-metrics.mjs && node scripts/metrics/update-readme.mjs",
+    "metrics:trending": "node scripts/metrics/compute-metrics.mjs && node scripts/metrics/trending.mjs",
+    "visual:report": "node scripts/visual/generate-visual-report.mjs",
     "snapshots:prune": "node scripts/visual/cleanup-snapshots.mjs",
     "install:browsers": "npx playwright install",
     "install:deps": "npm install && npx playwright install",

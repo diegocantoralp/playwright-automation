@@ -59,10 +59,18 @@ playwright-portfolio/
 │   ├── demo-server/          # Demo server with /api/reset & /api/seed
 │   │   ├── server.js
 │   │   └── package.json
-│   └── health-demo/          # Legacy health check demo
+│   └── health-demo/          # Health check demo + component harnesses
+│       ├── server.js
+│       └── public/
+│           └── components/   # Isolated component HTML for visual tests
+│               ├── card.html
+│               ├── product-item.html
+│               └── navbar.html
 ├── docs/
 │   ├── TEST-STRATEGY.md      # Testing strategy documentation
-│   └── ENRICHED-REPORTS.md   # Reports, videos, traces guide
+│   ├── ENRICHED-REPORTS.md   # Reports, videos, traces guide
+│   ├── DAY-09-ENRICHED-CI.md # Day 9: CI intelligence + GitHub Pages
+│   └── DAY-10-COMPONENT-VISUAL.md # Day 10: Component visual + metrics
 ├── fixtures/
 │   ├── base-test.ts          # Custom test fixtures
 │   ├── api-helper.ts         # API testing utilities
@@ -79,7 +87,11 @@ playwright-portfolio/
 │   ├── accessibility/
 │   │   └── home.a11y.spec.ts # WCAG compliance (@a11y)
 │   ├── visual/
-│   │   └── home.visual.spec.ts # Screenshot comparisons (@visual)
+│   │   ├── home.visual.spec.ts # Page-level visual tests
+│   │   └── components/       # Component-level visual tests
+│   │       ├── card.spec.ts
+│   │       ├── product-item.spec.ts
+│   │       └── navbar.spec.ts
 │   ├── api/
 │   │   └── products.contract.mock.spec.ts
 │   ├── authenticated/        # Tests requiring auth
@@ -89,10 +101,15 @@ playwright-portfolio/
 │       └── products.seed.spec.ts  # Tests using seed fixtures
 ├── scripts/
 │   ├── merge-reports.js      # Merge multiple test reports
-│   └── generate-summary.js   # Generate enhanced HTML summary
+│   ├── generate-summary.js   # Generate enhanced HTML summary
+│   ├── metrics/
+│   │   ├── compute-metrics.mjs    # Calculate test metrics
+│   │   └── update-readme.mjs      # Inject metrics into README
+│   └── visual/
+│       └── cleanup-snapshots.mjs  # Remove orphaned snapshots
 ├── .github/
 │   └── workflows/
-│       └── ci.yml           # Multi-job CI pipeline
+│       └── ci.yml           # Multi-job CI pipeline with metrics
 ├── playwright.config.ts     # Playwright configuration
 └── package.json
 ```
