@@ -286,7 +286,7 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
           
-      - name: 🔍 Upload traces & media
+      - name: 📊 Upload metrics reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
