@@ -40,6 +40,11 @@ _Pendiente de primera ejecución._
 - ✅ **Enriched Reports**: Videos, traces, screenshots as artifacts
 - ✅ **Automated Metrics**: Flaky rate, pass rate, duration tracking in README/CI
 - ✅ **Snapshot Cleanup**: Automated orphan snapshot removal
+- ✅ **Test Prioritization**: Hierarchical tags (@critical, @high, @medium, @low)
+- ✅ **Custom Reporter**: Priority-based reporting with Slack/Discord notifications
+- ✅ **Data Factories**: Factory pattern for consistent test data generation
+- ✅ **CI Sharding**: Parallel execution optimization with intelligent distribution
+- ✅ **Performance Tracking**: Trend analysis for duration, pass rate, and flaky rate
 - ✅ **CI/CD**: Multi-job GitHub Actions pipeline with intelligent test selection
 
 ## Tecnologías
@@ -406,6 +411,7 @@ Configuration in CI:
 - [Enriched Reports Guide](./playwright-portfolio/docs/ENRICHED-REPORTS.md)
 - [Day 9: Enriched CI + GitHub Pages](./playwright-portfolio/docs/DAY-09-ENRICHED-CI.md)
 - [Day 10: Component Visual + Metrics](./playwright-portfolio/docs/DAY-10-COMPONENT-VISUAL.md)
+- [Day 11: Advanced Organization + Reporting](./playwright-portfolio/docs/DAY-11-ADVANCED-ORGANIZATION.md)
 
 ## 🔗 Resources
 
