@@ -426,7 +426,68 @@ jobs:
             echo "- 📊 Complete HTML reports" >> $GITHUB_STEP_SUMMARY
           fi
 
-  # Job 6: Publish Report to GitHub Pages
+  # Job 6: Component Tests (Props + Network + A11y Golden)
+  component-tests:
+    name: 🧩 Component Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: 📦 Install dependencies
+        run: npm ci
+        
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        
+      - name: 🧩 Run component tests (props → DOM + network mocking)
+        run: npm run test:components
+        
+      - name: 📊 Upload component test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-component-tests
+          path: playwright-report
+          retention-days: 7
+          
+      - name: 📈 Generate metrics for components
+        if: always()
+        run: |
+          mkdir -p reports
+          npm run metrics:trending || echo "Metrics generation skipped"
+          npm run visual:report || echo "No visual diffs"
+        
+      - name: 📝 Add component metrics to job summary
+        if: always()
+        run: |
+          echo "## 🧩 Component Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Types:**" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Props → DOM validation" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Network mocking tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ♿ A11y golden baseline" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f reports/summary.json ]; then
+            cat reports/summary.json | jq -r '"**Total:** \(.total) | **Passed:** \(.passed) (\(.passRate)%) | **Failed:** \(.failed) | **Flaky:** \(.flaky) (\(.flakyRate)%)"' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+      - name: 🔍 Upload component traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces-component-tests
+          path: test-results
+          retention-days: 14
+          if-no-files-found: ignore
+
+  # Job 7: Publish Report to GitHub Pages
   publish-report:
     name: 📄 Publish Report to GitHub Pages
     needs: regression-tests

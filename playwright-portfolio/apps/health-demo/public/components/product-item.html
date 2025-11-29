@@ -1,53 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Item Component</title>
   <style>
-    * { 
-      animation: none !important; 
-      transition: none !important; 
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * {
+      animation: none !important;
+      transition: none !important;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      margin: 0;
       padding: 20px;
       background: #f5f5f5;
     }
-    .product-item { 
-      width: 280px; 
-      padding: 12px;
+    [data-testid="product-item"] {
+      max-width: 360px;
+      padding: 24px;
       background: white;
-      border: 1px solid #e0e0e0; 
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    .product-image {
-      width: 100%;
-      height: 180px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
-    .product-name { 
+    [data-testid="name"] {
+      margin: 0 0 12px;
+      font-size: 20px;
       font-weight: 600;
-      font-size: 16px;
-      line-height: 1.3;
-      margin: 0 0 6px;
-      color: #111;
+      color: #1a202c;
     }
-    .product-price { 
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 1.2;
+    [data-testid="price"] {
       margin: 0 0 8px;
-      color: #2563eb;
+      font-size: 24px;
+      font-weight: 700;
+      color: #2d3748;
     }
-    .product-stock {
-      font-weight: 400;
-      font-size: 12px;
+    [data-testid="stock"] {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      margin: 8px 0;
+    }
+    .in-stock {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+    .out-of-stock {
+      background: #fed7d7;
+      color: #742a2a;
+    }
+    [data-testid="price-converted"] {
+      display: block;
+      margin-top: 12px;
+      padding: 8px;
+      font-size: 14px;
+      color: #718096;
+      background: #edf2f7;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .loading {
+      opacity: 0.6;
+    }
+  </style>
+  <script type="module">
+    import { parseProps, formatCurrency } from './_utils.js';
+    
+    // Parse props from URL or use defaults
+    const defaultProps = {
+      id: '550e8400-e29b-41d4-a716-446655440010',
+      name: 'Taza Cerámica',
+      price: 25,
+      currency: 'PEN',
+      inStock: true
+    };
+    
+    const props = Object.assign({}, defaultProps, parseProps());
+    
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const root = document.querySelector('[data-testid="product-item"]');
+      if (!root) return;
+      
+      // Render basic product info
+      const nameEl = root.querySelector('[data-testid="name"]');
+      const priceEl = root.querySelector('[data-testid="price"]');
+      const stockEl = root.querySelector('[data-testid="stock"]');
+      
+      if (nameEl) nameEl.textContent = props.name;
+      if (priceEl) priceEl.textContent = formatCurrency(props.price, props.currency);
+      
+      if (stockEl) {
+        stockEl.textContent = props.inStock ? 'Disponible' : 'Agotado';
+        stockEl.className = props.inStock ? 'in-stock' : 'out-of-stock';
+      }
+      
+      // Fetch converted price (example of network call that can be mocked)
+      const convertedEl = root.querySelector('[data-testid="price-converted"]');
+      if (convertedEl) {
+        convertedEl.textContent = 'Cargando conversión...';
+        convertedEl.classList.add('loading');
+        
+        fetch(`/api/convert?currency=${props.currency}&amount=${props.price}`)
+          .then(response => {
+            if (!response.ok) throw new Error('Conversion failed');
+            return response.json();
+          })
+          .then(data => {
+            convertedEl.textContent = `≈ ${formatCurrency(data.amount, data.currency)}`;
+            convertedEl.classList.remove('loading');
+          })
+          .catch(error => {
+            console.warn('Currency conversion failed:', error);
+            convertedEl.textContent = 'Conversión no disponible';
+            convertedEl.classList.remove('loading');
+          });
+      }
+    });
+  </script>
+</head>
+<body>
+  <article data-testid="product-item" aria-label="Producto" role="article">
+    <h2 data-testid="name" id="product-name">Cargando...</h2>
+    <p data-testid="price" aria-label="Precio">$0.00</p>
+    <span data-testid="stock" role="status" aria-live="polite">Verificando stock...</span>
+    <small data-testid="price-converted" aria-label="Precio convertido"></small>
+  </article>
+</body>
+</html>
       line-height: 1.4;
       color: #16a34a;
     }
